@@ -83,20 +83,6 @@ public class Cartridge extends SubsystemBase {
     }
   }
 
-  private boolean sharp_proximity_alert(int goal_value){
-      if(_sharpSensor.getValue() >= goal_value){
-        return true;
-      }
-      return false;
-  }
-
-  private boolean color_proximity_alert(int goal_value){
-    if(_colorSensor.getProximity() >= goal_value){
-      return true;
-    }
-    return false;
-  }
-
   public boolean good_ball(){
     if(alliance_chooser.getSelected() == Alliance.Blue){
       return detect_color(kBlueTarget);
@@ -106,6 +92,20 @@ public class Cartridge extends SubsystemBase {
   }
 
   // Private Subsytem Methods -- Unexposed to the rest of the robot
+  private boolean sharp_proximity_alert(int goal_value){
+    if(_sharpSensor.getValue() >= goal_value){
+      return true;
+    }
+    return false;
+  } 
+
+  private boolean color_proximity_alert(int goal_value){
+    if(_colorSensor.getProximity() >= goal_value){
+      return true;
+    }
+    return false;
+  }
+
   private boolean detect_color(Color targetColor) {
     Color detectedColor = _colorSensor.getColor();
     ColorMatchResult matcher = _colorMatcher.matchClosestColor(detectedColor);
