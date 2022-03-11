@@ -6,6 +6,7 @@ package frc.robot.commands.cartridge;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
+import frc.robot.subsystems.Cartridge.SensorType;
 import frc.robot.subsystems.Cartridge;
 
 public class Stack extends CommandBase {
@@ -23,8 +24,8 @@ public class Stack extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    _cartridge.set_cartridge(0.1);
-    _cartridge.set_filter(0);
+    _cartridge.set_cartridge(Constants.cartrige_motor_output); // Cartridge indexing speed until sharp sensor activated.
+    _cartridge.set_filter(0); // Filter should stop spinning while cartridge is indexing.
   }
 
   // Called once the command ends or is interrupted.
@@ -34,7 +35,7 @@ public class Stack extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if(_cartridge.sharp_proximity_alert(Constants.sharp_sensor_threshold)){
+    if(_cartridge.proximity_alert(SensorType.SHARP, Constants.sharp_sensor_threshold)){
       return true;
     }
     return false;

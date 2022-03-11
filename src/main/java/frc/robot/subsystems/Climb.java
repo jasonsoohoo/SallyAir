@@ -35,6 +35,8 @@ public class Climb extends SubsystemBase {
     _right.setInverted(right_climb_inverted);
 
     _right.follow(_left);
+
+    System.out.println("- Climb Initialized -");
   }
 
   public void set_climb(double percent){

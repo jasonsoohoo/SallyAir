@@ -60,6 +60,8 @@ public class Drivetrain extends SubsystemBase {
    _left2.setNeutralMode(NeutralMode.Coast);
    _right1.setNeutralMode(NeutralMode.Coast);
    _right2.setNeutralMode(NeutralMode.Coast);
+
+   System.out.println("- Drivetrain Intialized - ");
   }
 
   public void curvatureDrive(double thrust_axis, double rotation_axis, boolean is_squared){

@@ -7,6 +7,7 @@ package frc.robot.commands.cartridge;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Cartridge;
 import frc.robot.subsystems.Pneumatics;
+import frc.robot.subsystems.Pneumatics.PneumaticType;
 
 public class Reject extends CommandBase {
   private Cartridge _cartridge;
@@ -21,7 +22,7 @@ public class Reject extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    _pneumatics.kicker_reverse();
+    _pneumatics.set_solenoid(PneumaticType.KICKER, false);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -34,7 +35,7 @@ public class Reject extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    _pneumatics.kicker_forward();
+    _pneumatics.set_solenoid(PneumaticType.KICKER, true);
   }
 
   // Returns true when the command should end.

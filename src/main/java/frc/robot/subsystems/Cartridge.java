@@ -9,8 +9,10 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+
 import static frc.robot.Constants.*;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
@@ -22,6 +24,11 @@ import com.revrobotics.ColorMatchResult;
 import com.revrobotics.ColorSensorV3;
 
 public class Cartridge extends SubsystemBase {
+
+  public enum SensorType {
+    SHARP, COLORPROX, COLOR
+  }
+  
   private WPI_TalonFX _top = new WPI_TalonFX(top_cartridge);
   private WPI_TalonFX _bottom = new WPI_TalonFX(bottom_cartridge);
   private AnalogInput _sharpSensor;
@@ -36,7 +43,6 @@ public class Cartridge extends SubsystemBase {
   public Cartridge() {
     alliance_chooser.setDefaultOption("Blue Alliance", Alliance.Blue);
     alliance_chooser.addOption("Red Alliance", Alliance.Red);
-
 
     _sharpSensor = new AnalogInput(sharp_sensor_port);
     
@@ -54,6 +60,8 @@ public class Cartridge extends SubsystemBase {
 
     _colorMatcher.addColorMatch(kBlueTarget);
     _colorMatcher.addColorMatch(kRedTarget);
+
+    System.out.println("- Cartridge Initialized -");
   }
 
   public void set_filter(double percent){
@@ -64,48 +72,55 @@ public class Cartridge extends SubsystemBase {
     _top.set(ControlMode.PercentOutput, percent);
   }
 
-  public boolean sharp_proximity_alert(int goal_value){
+  public boolean proximity_alert(SensorType type, int goal_threshold){
+    switch(type){
+      case COLORPROX:
+        return color_proximity_alert(goal_threshold);
+      case SHARP:
+        return sharp_proximity_alert(goal_threshold);
+      default:
+        return false;
+    }
+  }
+
+  private boolean sharp_proximity_alert(int goal_value){
       if(_sharpSensor.getValue() >= goal_value){
         return true;
       }
       return false;
   }
 
-  public boolean color_proximity_alert(int goal_value){
+  private boolean color_proximity_alert(int goal_value){
     if(_colorSensor.getProximity() >= goal_value){
       return true;
     }
     return false;
   }
 
-  public boolean color_blue(){
-    Color detectedColor = _colorSensor.getColor();
-    ColorMatchResult matcher = _colorMatcher.matchClosestColor(detectedColor);
-    if(matcher.color == kBlueTarget){
-      return true;
-    }
-      return false;
-  }
-
-  public boolean color_red(){
-    Color detectedColor = _colorSensor.getColor();
-    ColorMatchResult matcher = _colorMatcher.matchClosestColor(detectedColor);
-    if(matcher.color == kRedTarget){
-      return true;
-    }
-      return false;
-  }
-
   public boolean good_ball(){
     if(alliance_chooser.getSelected() == Alliance.Blue){
-      return color_blue();
+      return detect_color(kBlueTarget);
     } else {
-      return color_red();
+      return detect_color(kRedTarget);
     }
+  }
+
+  // Private Subsytem Methods -- Unexposed to the rest of the robot
+  private boolean detect_color(Color targetColor) {
+    Color detectedColor = _colorSensor.getColor();
+    ColorMatchResult matcher = _colorMatcher.matchClosestColor(detectedColor);
+    if(matcher.color == targetColor) {
+      return true;
+    }
+    return false;
   }
 
   @Override
   public void periodic() {
+    SmartDashboard.putNumber("Sharp Value", _sharpSensor.getValue());
+    SmartDashboard.putNumber("Color Proximity", _colorSensor.getProximity());
+    SmartDashboard.putBoolean("isBlue", detect_color(kBlueTarget));
+    SmartDashboard.putBoolean("isRed", detect_color(kRedTarget));
     // This method will be called once per scheduler run
   }
 }

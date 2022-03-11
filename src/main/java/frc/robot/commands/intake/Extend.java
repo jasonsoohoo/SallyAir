@@ -7,6 +7,8 @@ package frc.robot.commands.intake;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Pneumatics;
+import frc.robot.subsystems.Pneumatics.PneumaticType;
+
 import static frc.robot.Constants.intake_speed;
 
 public class Extend extends CommandBase {
@@ -22,7 +24,7 @@ public class Extend extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    _pneumatics.intake_arm_forward();
+    _pneumatics.set_solenoid(PneumaticType.INTAKEARM, true);
     _intake.set_intake_wheels(intake_speed);
   }
 

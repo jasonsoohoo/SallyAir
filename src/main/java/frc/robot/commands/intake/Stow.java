@@ -7,6 +7,7 @@ package frc.robot.commands.intake;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Pneumatics;
+import frc.robot.subsystems.Pneumatics.PneumaticType;
 
 public class Stow extends CommandBase {
   private Intake _intake;
@@ -21,7 +22,7 @@ public class Stow extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    _pneumatics.intake_arm_reverse();
+    _pneumatics.set_solenoid(PneumaticType.INTAKEARM, false);
     _intake.stop_intake_wheels();
   }
 

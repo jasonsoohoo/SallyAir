@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.Constants;
 import frc.robot.subsystems.Pneumatics;
 import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.Pneumatics.PneumaticType;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
@@ -25,6 +26,6 @@ public class CloseHigh extends InstantCommand {
   @Override
   public void initialize() {
     _shooter.set_goal_velocity(Constants.shooter_vel_high_close);
-    _pneumatics.shooter_hood_reverse();
+    _pneumatics.set_solenoid(PneumaticType.SHOOTERHOOD, false);
   }
 }

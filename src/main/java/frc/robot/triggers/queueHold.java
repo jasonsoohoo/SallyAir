@@ -3,6 +3,7 @@ package frc.robot.triggers;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants;
 import frc.robot.subsystems.Cartridge;
+import frc.robot.subsystems.Cartridge.SensorType;
 
 public class queueHold extends Trigger {
     private Cartridge _cartridge;
@@ -13,9 +14,9 @@ public class queueHold extends Trigger {
 
     @Override
     public boolean get() {
-      if(_cartridge.color_proximity_alert(Constants.color_proximity_sensor_threshold) &&
+      if(_cartridge.proximity_alert(SensorType.COLORPROX, Constants.color_proximity_sensor_threshold) &&
          _cartridge.good_ball() &&
-         _cartridge.sharp_proximity_alert(Constants.sharp_sensor_threshold)){
+         _cartridge.proximity_alert(SensorType.SHARP, Constants.sharp_sensor_threshold)){
         return true;
       }
       return false;

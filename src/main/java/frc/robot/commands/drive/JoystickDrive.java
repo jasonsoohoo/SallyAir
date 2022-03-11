@@ -5,7 +5,7 @@
 package frc.robot.commands.drive;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import static frc.robot.RobotContainer.*;
+import static frc.robot.OI.*;
 import frc.robot.subsystems.Drivetrain;
 
 public class JoystickDrive extends CommandBase {

@@ -4,12 +4,15 @@
 
 package frc.robot.commands.climb;
 
-import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.subsystems.Pneumatics;
+import frc.robot.subsystems.Pneumatics.PneumaticType;
 
-public class Deploy extends CommandBase {
+// NOTE:  Consider using this command inline, rather than writing a subclass.  For more
+// information, see:
+// https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
+public class Deploy extends InstantCommand {
   private Pneumatics _pneumatics;
-  /** Creates a new Deploy. */
   public Deploy(Pneumatics pneumatics) {
     _pneumatics = pneumatics;
     // Use addRequirements() here to declare subsystem dependencies.
@@ -18,20 +21,6 @@ public class Deploy extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    _pneumatics.climb_release_toggle();
-  }
-
-  // Called every time the scheduler runs while the command is scheduled.
-  @Override
-  public void execute() {}
-
-  // Called once the command ends or is interrupted.
-  @Override
-  public void end(boolean interrupted) {}
-
-  // Returns true when the command should end.
-  @Override
-  public boolean isFinished() {
-    return false;
+    _pneumatics.toggle_solenoid(PneumaticType.CLIMBRELEASE);
   }
 }
