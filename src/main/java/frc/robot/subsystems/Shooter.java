@@ -57,7 +57,7 @@ public class Shooter extends SubsystemBase {
     _left.setNeutralMode(NeutralMode.Coast);
     _left.setNeutralMode(NeutralMode.Coast);
 
-    pdp.setSwitchableChannel(false);
+    pdp.setSwitchableChannel(true);
 
     System.out.println("- Shooter Initialized -");
   }
@@ -82,7 +82,7 @@ public class Shooter extends SubsystemBase {
   }
 
   public void set_flash_light(boolean power){
-    pdp.setSwitchableChannel(power);
+    // pdp.setSwitchableChannel(power);
   }
 
   @Override

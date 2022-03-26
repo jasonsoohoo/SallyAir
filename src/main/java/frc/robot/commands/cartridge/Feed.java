@@ -20,13 +20,14 @@ public class Feed extends CommandBase {
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
     if(_shooter.get_is_sped()){
-      _cartridge.set_cartridge(0.1);
+      _cartridge.set_cartridge(0.7);
       _cartridge.set_filter(0.1);
     } else {
       _cartridge.set_cartridge(0);

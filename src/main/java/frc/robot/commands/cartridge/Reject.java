@@ -4,6 +4,7 @@
 
 package frc.robot.commands.cartridge;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Cartridge;
 import frc.robot.subsystems.Pneumatics;
@@ -12,6 +13,7 @@ import frc.robot.subsystems.Pneumatics.PneumaticType;
 public class Reject extends CommandBase {
   private Cartridge _cartridge;
   private Pneumatics _pneumatics;
+  private boolean isFinished = false;
   /** Creates a new Empty. */
   public Reject(Cartridge cartridge, Pneumatics pneumatics) {
     _cartridge = cartridge;
@@ -29,7 +31,12 @@ public class Reject extends CommandBase {
   @Override
   public void execute() {
     _cartridge.set_cartridge(0);
-    _cartridge.set_filter(0.5);
+    _cartridge.set_filter(1);
+    Timer timer = new Timer();
+    double previous = timer.getFPGATimestamp();
+    if(previous + 1.5 < timer.getFPGATimestamp()){
+      isFinished = true;
+    }
   }
 
   // Called once the command ends or is interrupted.
@@ -41,6 +48,6 @@ public class Reject extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return isFinished;
   }
 }

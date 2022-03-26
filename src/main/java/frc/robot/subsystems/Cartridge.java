@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.PicoColorSensor;
 
 import static frc.robot.Constants.*;
 
@@ -22,6 +23,7 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.revrobotics.ColorMatch;
 import com.revrobotics.ColorMatchResult;
 import com.revrobotics.ColorSensorV3;
+import com.revrobotics.ColorSensorV3.RawColor;
 
 public class Cartridge extends SubsystemBase {
 
@@ -36,8 +38,11 @@ public class Cartridge extends SubsystemBase {
   private final I2C.Port i2cPort = I2C.Port.kMXP;
   private ColorSensorV3 _colorSensor = new ColorSensorV3(i2cPort);
   private ColorMatch _colorMatcher = new ColorMatch();
+
+  private PicoColorSensor colorSensor = new PicoColorSensor();
   private final Color kBlueTarget = new Color(0.181, 0.423, 0.395);
-  private final Color kRedTarget = new Color(0.561, 0.232, 0.114);
+  // private final Color kRedTarget = new Color(0.561, 0.232, 0.114);
+  private final Color kRedTarget = new Color(0.3, 0.2, 0.114);
   SendableChooser<DriverStation.Alliance> alliance_chooser = new SendableChooser<>();
   /** Creates a new Cartridge. */
   public Cartridge() {
@@ -83,7 +88,7 @@ public class Cartridge extends SubsystemBase {
     }
   }
 
-  public boolean good_ball(){
+  public boolean good_ball(){ // Change which private function to use in order to swap sensor setups
     if(alliance_chooser.getSelected() == Alliance.Blue){
       return detect_color(kBlueTarget);
     } else {
@@ -106,8 +111,17 @@ public class Cartridge extends SubsystemBase {
     return false;
   }
 
-  private boolean detect_color(Color targetColor) {
+  private boolean detect_color(Color targetColor) { // for use with normal mxp or onboard i2c
     Color detectedColor = _colorSensor.getColor();
+    ColorMatchResult matcher = _colorMatcher.matchClosestColor(detectedColor);
+    if(matcher.color == targetColor) {
+      return true;
+    }
+    return false;
+  }
+
+  private boolean detect_color_pico(Color targetColor) { // for use with rpi pico workaround
+    Color detectedColor = new Color(colorSensor.getRawColor0().red, colorSensor.getRawColor0().green, colorSensor.getRawColor0().blue);
     ColorMatchResult matcher = _colorMatcher.matchClosestColor(detectedColor);
     if(matcher.color == targetColor) {
       return true;
@@ -122,5 +136,12 @@ public class Cartridge extends SubsystemBase {
     SmartDashboard.putBoolean("isBlue", detect_color(kBlueTarget));
     SmartDashboard.putBoolean("isRed", detect_color(kRedTarget));
     // This method will be called once per scheduler run
+
+    SmartDashboard.putNumber("Pico Prox0", colorSensor.getProximity0());
+    SmartDashboard.putNumber("Pico Blue", colorSensor.getRawColor0().blue);
+    SmartDashboard.putNumber("Pico Red", colorSensor.getRawColor0().red);
+
+    SmartDashboard.putNumber("Red", _colorSensor.getRed());
+    SmartDashboard.putNumber("Blue", _colorSensor.getBlue());
   }
 }

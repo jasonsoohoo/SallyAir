@@ -2,31 +2,30 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands.drive;
+package frc.robot.commands.turret;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import static frc.robot.OI.*;
-import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.Turret;
 
-public class JoystickDrive extends CommandBase {
-  private final Drivetrain subsys;
-  /** Creates a new JoystickDrive. */
-  public JoystickDrive(Drivetrain sub) {
-    subsys = sub;
-    addRequirements(subsys);
+public class HomeTurret extends CommandBase {
+  private Turret _turret;
+  /** Creates a new HomeTurret. */
+  public HomeTurret(Turret turret) {
+    _turret = turret;
+    addRequirements(turret);
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    subsys.curvatureDrive(controller_1.getLeftY()*0.7, controller_1.getRightX()*0.3, true); // change to true later
-    SmartDashboard.putNumber("Controller 1 Get Right X", controller_1.getRightX());
+    _turret.turret_home();
   }
 
   // Called once the command ends or is interrupted.

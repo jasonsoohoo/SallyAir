@@ -23,7 +23,7 @@ public class Empty extends CommandBase {
   @Override
   public void execute() {
     _cartridge.set_cartridge(-0.1);
-    _cartridge.set_filter(-0.1);
+    _cartridge.set_filter(0.1);
   }
 
   // Called once the command ends or is interrupted.

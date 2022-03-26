@@ -6,7 +6,9 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.commands.auto.ShootAndPickup;
 import frc.robot.commands.cartridge.Empty;
 import frc.robot.commands.cartridge.Feed;
@@ -25,12 +27,17 @@ import frc.robot.commands.shooter.CloseLow;
 import frc.robot.commands.shooter.Dormant;
 import frc.robot.commands.shooter.Far;
 import frc.robot.commands.shooter.Spinup;
+import frc.robot.commands.turret.HomeTurret;
+import frc.robot.commands.turret.ManualTurretControl;
+import frc.robot.commands.turret.MoveHood;
+import frc.robot.commands.turret.TurnOnLimelight;
 import frc.robot.subsystems.Cartridge;
 import frc.robot.subsystems.Climb;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Pneumatics;
 import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.Turret;
 import frc.robot.triggers.queueHold;
 import frc.robot.triggers.queueIdle;
 import frc.robot.triggers.queueReject;
@@ -51,10 +58,12 @@ public class RobotContainer {
   private final Pneumatics _pneumatics = new Pneumatics();
   private final Cartridge _cartridge = new Cartridge();
   private final Climb _climb = new Climb();
+  private final Turret _turret = new Turret();
 
   private final JoystickDrive _JoystickDrive = new JoystickDrive(_drive);
   private final Stow _Stow = new Stow(_intake, _pneumatics);
   private final Dormant _Dormant = new Dormant(_shooter);
+  private final HomeTurret _HomeTurret = new HomeTurret(_turret);
 
   private queueHold hold_trigger = new queueHold(_cartridge);
   private queueIdle idle_trigger = new queueIdle(_cartridge);
@@ -68,8 +77,21 @@ public class RobotContainer {
     _drive.setDefaultCommand(_JoystickDrive);
     _intake.setDefaultCommand(_Stow);
     _shooter.setDefaultCommand(_Dormant);
+    _turret.setDefaultCommand(_HomeTurret);
     // Configure the button bindings
     configureButtonBindings();
+    SmartDashboard.putData(CommandScheduler.getInstance());
+    SmartDashboard.putData(_drive);
+    SmartDashboard.putData(_shooter);
+    SmartDashboard.putData(_intake);
+    SmartDashboard.putData(_pneumatics);
+    SmartDashboard.putData(_cartridge);
+    SmartDashboard.putData(_climb);
+    SmartDashboard.putData(_turret);
+
+    SmartDashboard.putData("Move Hood", new MoveHood(_turret));
+    SmartDashboard.putData("Move Turret", new ManualTurretControl(_turret));
+    SmartDashboard.putData("Power Limelight", new TurnOnLimelight(_turret));
   }
 
   /**
@@ -133,8 +155,8 @@ public class RobotContainer {
      */
 
     hold_trigger.whileActiveContinuous(new Hold(_cartridge));
-    idle_trigger.whileActiveContinuous(new Idle(_cartridge));
-    stack_trigger.whileActiveContinuous(new Stack(_cartridge));
+    idle_trigger.whileActiveContinuous(new Idle(_cartridge, _pneumatics));
+    stack_trigger.whileActiveContinuous(new Stack(_cartridge), false);
     reject_trigger.whileActiveContinuous(new Reject(_cartridge, _pneumatics));
     
   }

@@ -15,9 +15,9 @@ package frc.robot;
 public final class Constants {
     // Cartridge Constants
     public static final int cartridge_motor_units = 500;
-    public static final double cartrige_motor_output = 0.3;
+    public static final double cartrige_motor_output = 0.425;
 
-    public static final int color_sensor_acceptance_proximity = 120;
+    public static final int color_sensor_acceptance_proximity = 175;
     public static final int units_to_purge = 30000;
     public static final int filter_unit_increment = 4800;
 
@@ -43,6 +43,22 @@ public final class Constants {
     public static final boolean k_right_shooter_sensorPhase = false;
     public static final boolean right_shooter_isInverted = true;
 
+    //Turret Constants
+    public static final int turret_falc = 16;
+    public static final int falcon_sensor_units_per_rot = 2048;
+    public static final int k_turret_slotIDX = 0;
+    public static final int k_turret_pidLoopIDX = 0;
+    public static final int k_turret_timeoutMS = 30;
+    public static final boolean k_turret_sensorPhase = false;
+    public static final Gains k_turret_gains = new Gains(0.1, 0, 0, 2048/100, 300, 1);
+    public static final boolean k_turret_inverted = false;
+
+    public static final int dio_left_limit = 8;
+    public static final int dio_right_limit = 9;
+
+    public static final int left_linear_servo_pwm = 0;
+    public static final int right_linear_servo_pwm = 1;
+
     //Shooter Gains,Timeout and Velocities
     public static final int k_shooter_slotIDX = 0;
     public static final int k_shooter_pidLoopIDX = 0;
@@ -53,6 +69,11 @@ public final class Constants {
     public static final int shooter_vel_high_close = 300;
     public static final int shooter_vel_low_close = 150;
 
+    //Turret Position Max and Min Units
+    public static final int min_position = 0; //Left Most
+    public static final int max_position = 1000; //Right Most
+
+
     //Filter Wheel Constants
     public static final int k_filter_wheels_slotIDX = 0;
     public static final int k_filter_wheels_pidLoopIDX = 0;
@@ -62,15 +83,15 @@ public final class Constants {
 
     //Cartridge Motors Constants
     public static final int bottom_cartridge = 6; //CAN ID
-    public static final boolean bottom_cartridge_isInverted = false;
+    public static final boolean bottom_cartridge_isInverted = true;
 
     public static final int top_cartridge = 7; //CAN ID
     public static final boolean top_cartridge_isInverted = false;
 
     //Cartridge Sensor
-    public static final int sharp_sensor_port = 0;
-    public static final int sharp_sensor_threshold = 0;
-    public static final int color_proximity_sensor_threshold = 0;
+    public static final int sharp_sensor_port = 2;
+    public static final int sharp_sensor_threshold = 2400;
+    public static final int color_proximity_sensor_threshold = 175;
 
     //Cartridge Constants
     public static final int k_cartridge_slotIDX = 0;
@@ -82,9 +103,9 @@ public final class Constants {
     public static final int cartridge_increment = 800;
 
     //Intake Constants
-    public static final int intake = 16; //CAN ID
+    public static final int intake = 33; //CAN ID //NEEDS TO BE CHANGED
     public static final boolean intake_isInverted = false;
-    public static final double intake_speed = 0.65;
+    public static final double intake_speed = 0.3;
 
     //Climb Constants
     public static final int left_climb = 11; //CAN ID

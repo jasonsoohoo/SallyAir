@@ -28,7 +28,7 @@ public class Pneumatics extends SubsystemBase {
   public Pneumatics() {
     
     //SETTING INITIAL CONFIGURATION
-    m_kicker.set(Value.kReverse);
+    m_kicker.set(Value.kForward);
     m_articulator.set(Value.kReverse);
     m_intake_arm.set(Value.kReverse);
     m_climb_release.set(Value.kForward);
@@ -67,14 +67,19 @@ public class Pneumatics extends SubsystemBase {
     switch(name){
       case KICKER:
         dsolenoid_set(m_kicker, value);
+        break;
       case ARTICULATOR:
         dsolenoid_set(m_articulator, value);
+        break;
       case INTAKEARM:
         dsolenoid_set(m_intake_arm, value);
+        break;
       case CLIMBRELEASE:
         dsolenoid_set(m_climb_release, value);
+        break;
       case SHOOTERHOOD:
         dsolenoid_set(m_shooter_hood, value);
+        break;
     }
   }
 
